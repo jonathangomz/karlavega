@@ -1,11 +1,18 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_LOGO } from '../consts';
+
+interface Props {
+  color?: 'black' | 'white';
+}
+
+
+const { color } = Astro.props;
 ---
 
 <header>
 	<nav>
-		<h2>
+		<h2 class="logo">
 			<a href="/">{SITE_LOGO}</a>
 		</h2>
 		<div class="menu_links">
@@ -27,26 +34,30 @@ import { SITE_LOGO } from '../consts';
 		</div>	
 	</nav>
 </header>
-<style>
+<style define:vars={{ color: color ?? 'black' }}>
 	header {
 		margin: 0;
 		padding: 0 2em;
 	}
-	h2 {
+	.logo {
 		margin: 0;
 		font-size: 1em;
 	}
 
-	h2 a,
-	h2 a.active {
+	.logo a,
+	.logo a.active {
 		text-decoration: none;
 	}
 	nav {
+		z-index: 1;
+		position: absolute;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: calc(100% - 4em);
 	}
 	nav a {
+		color: var(--color);
 		padding: 1em 0.5em;
 	}
 
