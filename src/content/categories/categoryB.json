@@ -1,0 +1,22 @@
+{
+  "title": "Category Test",
+  "path": "/works/categoryB",
+  "image": "/images/categoryB/janm-installation-photo.jpg",
+  "all_images": [
+    {
+      "title": "Some title here",
+      "description": "Lorem ipsum",
+      "src": "/images/categoryB/janm-installation-photo.jpg"
+    },
+    {
+      "title": "Some title here",
+      "description": "Lorem ipsum",
+      "src": "/images/categoryB/RecessHomeopathic_webres.jpg"
+    },
+    {
+      "title": "Some title here",
+      "description": "Lorem ipsum",
+      "src": "/images/categoryB/studio-2424-webres.jpg"
+    }
+  ]
+}

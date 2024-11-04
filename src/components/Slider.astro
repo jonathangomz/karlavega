@@ -1,16 +1,16 @@
 ---
-import { getCollection } from "astro:content";
-const categories = await getCollection('categories');
+const {images} = Astro.props;
 ---
 
 <style>
   .swiper {
-    width: 100%;
-    height: 100%;
+    width: 750px;
+    max-width: 750px;
   }
 
   .swiper-wrapper {
     display: inline-flex;
+    gap: 28px;
   }
 
   .swiper-slide {
@@ -18,40 +18,24 @@ const categories = await getCollection('categories');
     font-size: 18px;
     background: #fff;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
   .swiper-slide img {
     display: block;
-    width: 100%;
-    height: 100vh;
     object-fit: cover;
     object-position: center;
   }
 
-  .swiper-path {
-    position: relative;
-    top: -10vh;
-    left: 75px;
-    background-color: rgba(255, 255, 255, 0.6);
-    max-width: 128px;
-    font-size: 15px;
-    padding: 8px;
-    text-align: center;
-  }
-
-  .swiper-path > .global-path {
-    font-weight: 200;
-  }
-
   .swiper-buttons {
-    position: relative;
-    top: calc(-50vh - 32px);
+    position: absolute;
+    top: calc(32vh - 32px);
     display: flex;
     justify-content: space-between;
-    padding: 0 75px;
     pointer-events: none;
+    width: calc(100% - 100px);
   }
 
   .swiper-button-prev,
@@ -79,22 +63,22 @@ const categories = await getCollection('categories');
   }
 </style>
 
-<div class="swiper fullscreen-swiper">
+<div class="swiper small-swiper">
   <div class="swiper-wrapper">
-    {categories.map((category) => (
-      <a class="swiper-slide" href={category.data.path}>
-        <img src={category.data.image} alt="" loading="lazy" />
-      </a>
+    {images.map((image) => (
+      <div class="swiper-slide">
+        <img src={image.src} alt={image.alt} loading="lazy" />
+        <p>{image.title}</p>
+      </div>
     ))}
-  </div>
-  <div class="swiper-path">
-    <span class="global-path">WORK / </span>2021
   </div>
   <div class="swiper-buttons">
     <div class="swiper-button-prev">
       &#8592;
     </div>
-    <div class="swiper-button-next">&#8594;</div>
+    <div class="swiper-button-next">
+      &#8594;
+    </div>
   </div>
 </div>
 
@@ -103,7 +87,7 @@ const categories = await getCollection('categories');
   import { Navigation } from 'swiper/modules';
 
   // Initialize Swiper after the component has been mounted
-  new Swiper(".fullscreen-swiper", {
+  new Swiper(".small-swiper", {
     modules: [Navigation],
     loop: true,
     navigation: {

@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Slider from '../components/Slider.astro';
+
+type Props = CollectionEntry<'categories'>['data'];
+
+const { title, description, all_images } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description ?? ''} />
+		<style>
+			main {
+				width: calc(100% - 5em);
+				max-width: 100%;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<Slider images={all_images} />
+		</main>
+	</body>
+</html>

@@ -1,0 +1,18 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import SingleCategory from '../../layouts/SingleCategory.astro';
+
+export async function getStaticPaths() {
+	const categories = await getCollection('categories');
+	return categories.map((category) => ({
+		params: { slug: category.id },
+		props: category,
+	}));
+}
+type Props = CollectionEntry<'categories'>;
+
+const post = Astro.props;
+---
+
+<SingleCategory {...post.data}>
+</SingleCategory>

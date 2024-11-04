@@ -2,10 +2,12 @@
 import HeaderLink from './HeaderLink.astro';
 import { SITE_LOGO } from '../consts';
 
+import { getCollection } from "astro:content";
+const categories = await getCollection('categories');
+
 interface Props {
   color?: 'black' | 'white';
 }
-
 
 const { color } = Astro.props;
 ---
@@ -17,8 +19,11 @@ const { color } = Astro.props;
 		</h2>
 		<div class="menu_links">
 			<div class="internal-links">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/about">About</HeaderLink>
+				<HeaderLink color={color} href="/">Home</HeaderLink>
+				{categories.map((category) => (
+					<HeaderLink color={color} href={category.data.path}>{category.data.title}</HeaderLink>
+				))}
+				<HeaderLink color={color} href="/about">About</HeaderLink>
 			</div>
 			<div class="social-links">
 				<a href="https://twitter.com/astrodotbuild" target="_blank">
