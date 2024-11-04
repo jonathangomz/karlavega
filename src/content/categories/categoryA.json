@@ -1,17 +1,17 @@
 {
   "title": "First category",
   "path": "/works/categoryA",
-  "image": "/karlavega/images/categoryA/bear-painting-150x98-finish-lores.jpg",
+  "image": "/images/categoryA/bear-painting-150x98-finish-lores.jpg",
   "all_images": [
     {
       "title": "Some title here",
       "description": "Lorem ipsum",
-      "src": "/karlavega/images/categoryA/bear-painting-150x98-finish-lores.jpg"
+      "src": "/images/categoryA/bear-painting-150x98-finish-lores.jpg"
     },
     {
       "title": "Some title here",
       "description": "Lorem ipsum",
-      "src": "/karlavega/images/ategoryA/IMG_0116-编辑+拷贝.jpeg"
+      "src": "/images/ategoryA/IMG_0116-编辑+拷贝.jpeg"
     }
   ]
 }
