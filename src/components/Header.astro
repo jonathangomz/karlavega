@@ -1,11 +1,13 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import { SITE_LOGO, SITE_TITLE } from '../consts';
+import { SITE_LOGO } from '../consts';
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_LOGO}</a></h2>
+		<h2>
+			<a href="/">{SITE_LOGO}</a>
+		</h2>
 		<div class="menu_links">
 			<div class="internal-links">
 				<HeaderLink href="/">Home</HeaderLink>
@@ -39,11 +41,6 @@ import { SITE_LOGO, SITE_TITLE } from '../consts';
 	h2 a.active {
 		text-decoration: none;
 	}
-
-	.menu_links {
-		display: flex;
-	}
-
 	nav {
 		display: flex;
 		align-items: center;
@@ -51,14 +48,18 @@ import { SITE_LOGO, SITE_TITLE } from '../consts';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
 	}
-	nav a.active {
-		text-decoration: underline var(--accent);
-		font-weight: normal;
+
+	.menu_links {
+		display: flex;
+		gap: 2.7vw;
 	}
+
+	.internal-links {
+		display: flex;
+		align-items: center;
+	}
+
 	.social-links,
 	.social-links a {
 		display: flex;
