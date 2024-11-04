@@ -6,7 +6,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://jonathangomz.github.io',
-	base: 'karlavega',
+	site: 'https://jonathangomz.github.io/karlavega',
 	integrations: [mdx(), sitemap()],
 });
