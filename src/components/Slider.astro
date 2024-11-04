@@ -1,5 +1,8 @@
 ---
-const {images} = Astro.props;
+import type { CollectionEntry } from 'astro:content';
+
+type Props = CollectionEntry<'categories'>['data'];
+const { all_images } = Astro.props;
 ---
 
 <style>
@@ -65,7 +68,7 @@ const {images} = Astro.props;
 
 <div class="swiper small-swiper">
   <div class="swiper-wrapper">
-    {images.map((image) => (
+    {all_images.map((image) => (
       <div class="swiper-slide">
         <img src={image.src} alt={image.alt} loading="lazy" />
         <p>{image.title}</p>

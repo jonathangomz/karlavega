@@ -2,17 +2,16 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import Slider from '../components/Slider.astro';
 
 type Props = CollectionEntry<'categories'>['data'];
 
-const { title, description, all_images } = Astro.props;
+const data = Astro.props;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description ?? ''} />
+		<BaseHead title={data.title} description={data.description ?? ''} />
 		<style>
 			main {
 				width: calc(100% - 5em);
@@ -26,7 +25,7 @@ const { title, description, all_images } = Astro.props;
 		<Header />
 		<main>
 			<article>
-				<Slider images={all_images} />
+				<Slider {...data} />
 		</main>
 	</body>
 </html>
