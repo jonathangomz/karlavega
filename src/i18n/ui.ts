@@ -50,6 +50,8 @@ export const ui = {
     'cv.group': 'Group exhibitions',
     'cv.residencies': 'Residencies',
     'cv.education': 'Education',
+    'cv.recognition': 'Recognition',
+    'cv.experience': 'Experience',
 
     'contact.title': 'Contact',
     'contact.intro':
@@ -91,6 +93,8 @@ export const ui = {
     'cv.group': 'Exposiciones colectivas',
     'cv.residencies': 'Residencias',
     'cv.education': 'Formación',
+    'cv.recognition': 'Reconocimientos',
+    'cv.experience': 'Experiencia profesional',
 
     'contact.title': 'Contacto',
     'contact.intro':
