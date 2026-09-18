@@ -5,8 +5,7 @@ export default defineConfig({
   // GitHub Pages project site: https://jonathangomz.github.io/karlavega/
   // For a custom domain later: set `site` to the domain, delete `base`, and
   // put the domain in `public/CNAME`.
-  site: 'https://jonathangomz.github.io',
-  base: '/karlavega',
+  site: 'https://karlavega.com',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es'],
