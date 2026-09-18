@@ -25,7 +25,7 @@ const basePath = stripLang(Astro.url.pathname);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description ?? t('site.tagline')} />
-    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/logo.png')} type="image/png" />
     {
       langCodes.map((code) => (
         <link rel="alternate" hreflang={code} href={new URL(localizePath(basePath, code), Astro.site)} />
