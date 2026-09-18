@@ -39,11 +39,17 @@ const { imageWidth, imageHeight } = work.data;
     display: block;
   }
 
-  /* Cards hug the artwork: no fixed box, no cropping, so portrait and
-     landscape works are both shown whole. */
+  .card__frame {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+  }
+
   .card__image {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     transition: opacity 0.3s ease;
   }
 
