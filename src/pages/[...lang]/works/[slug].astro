@@ -1,0 +1,138 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getWorks, workImage, localizeWork, type Work } from '../../../lib/works';
+import { langParams, localizePath, toLang, useTranslations } from '../../../i18n/ui';
+
+export const getStaticPaths = (async () => {
+  const works = await getWorks();
+  return langParams().flatMap(({ lang }) =>
+    works.map((work) => ({
+      params: { lang, slug: work.id },
+      props: { work },
+    }))
+  );
+}) satisfies GetStaticPaths;
+
+const lang = toLang(Astro.params.lang);
+const t = useTranslations(lang);
+const { work } = Astro.props as { work: Work };
+const { title, medium, size, summary, year } = localizeWork(work, lang);
+---
+
+<BaseLayout lang={lang} title={title} description={`${medium}, ${year}`}>
+  <div class="container">
+    <figure class="work__figure">
+      <div class="work__frame">
+        <img
+          class="work__image"
+          src={workImage(work, lang)}
+          alt={title}
+          width={work.data.imageWidth}
+          height={work.data.imageHeight}
+          fetchpriority="high"
+        />
+      </div>
+    </figure>
+
+    <div class="work__body">
+      <h1 class="page-title work__title">{title}</h1>
+
+      <table class="work__table">
+        <tbody>
+          <tr>
+            <th scope="row">{t('work.medium')}</th>
+            <td>{medium}</td>
+          </tr>
+          <tr>
+            <th scope="row">{t('work.size')}</th>
+            <td>{size}</td>
+          </tr>
+          <tr>
+            <th scope="row">{t('work.year')}</th>
+            <td>{year}</td>
+          </tr>
+          {
+            summary && (
+              <tr>
+                <th scope="row">{t('work.summary')}</th>
+                <td>{summary}</td>
+              </tr>
+            )
+          }
+        </tbody>
+      </table>
+
+      <p class="work__back">
+        <a class="link-underline" href={localizePath('/works', lang)}>{t('work.back')}</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .work__figure {
+    margin: 0;
+  }
+
+  .work__frame {
+    display: flex;
+    justify-content: flex-start;
+    max-height: 82vh;
+  }
+
+  .work__image {
+    width: auto;
+    max-width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+  }
+
+  .work__body {
+    max-width: 46rem;
+    margin-top: var(--space-md);
+  }
+
+  .work__title {
+    margin-bottom: var(--space-md);
+  }
+
+  .work__table {
+    width: 100%;
+    text-align: left;
+  }
+
+  .work__table th,
+  .work__table td {
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--color-line);
+    vertical-align: top;
+  }
+
+  .work__table th {
+    width: 9rem;
+    font-weight: 400;
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding-right: var(--space-sm);
+  }
+
+  .work__table td {
+    font-weight: 300;
+  }
+
+  .work__back {
+    margin-top: var(--space-lg);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 560px) {
+    .work__table th {
+      width: 7rem;
+    }
+  }
+</style>

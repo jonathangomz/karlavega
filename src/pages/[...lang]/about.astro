@@ -1,0 +1,70 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { placeholder } from '../../lib/works';
+import { langParams, toLang, useTranslations, withBase } from '../../i18n/ui';
+
+export const getStaticPaths = (() =>
+  langParams().map((params) => ({ params }))) satisfies GetStaticPaths;
+
+const lang = toLang(Astro.params.lang);
+const t = useTranslations(lang);
+const portrait = site.portrait
+  ? withBase(site.portrait)
+  : placeholder(site.portraitWidth, site.portraitHeight, 'Portrait');
+---
+
+<BaseLayout lang={lang} title={t('about.title')}>
+  <div class="container about">
+    <div class="frame about__portrait">
+      <img
+        src={portrait}
+        alt={t('about.portraitAlt')}
+        width={site.portraitWidth}
+        height={site.portraitHeight}
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="about__text">
+      <h1 class="page-title about__name">{site.name}</h1>
+      <p class="eyebrow about__tagline">{t('site.tagline')}</p>
+      <div class="prose about__bio">
+        {t('about.bio').map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .about__portrait img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .about__name {
+    margin-bottom: var(--space-xs);
+  }
+
+  .about__tagline {
+    margin-bottom: var(--space-md);
+  }
+
+  .about__bio {
+    font-weight: 300;
+  }
+
+  @media (max-width: 760px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import WorkCard from './WorkCard.astro';
+import type { Work } from '../lib/works';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  works: Work[];
+  lang: Lang;
+  /** Number of cards rendered eagerly (above the fold). */
+  eagerCount?: number;
+}
+
+const { works, lang, eagerCount = 3 } = Astro.props;
+---
+
+<ul class="grid">
+  {
+    works.map((work, i) => (
+      <li>
+        <WorkCard work={work} lang={lang} loading={i < eagerCount ? 'eager' : 'lazy'} />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md) clamp(1rem, 2.5vw, 2.5rem);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

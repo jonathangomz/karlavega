@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import WorkGrid from '../../../components/WorkGrid.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { getWorks, type Work } from '../../../lib/works';
+import { WORKS_PER_PAGE } from '../../../data/site';
+import { langParams, toLang, useTranslations } from '../../../i18n/ui';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const works = await getWorks();
+  return langParams().flatMap(({ lang }) =>
+    paginate(works, { params: { lang }, pageSize: WORKS_PER_PAGE })
+  );
+}) satisfies GetStaticPaths;
+
+const lang = toLang(Astro.params.lang);
+const t = useTranslations(lang);
+const { page } = Astro.props as { page: Page<Work> };
+---
+
+<BaseLayout lang={lang} title={t('works.title')}>
+  <div class="container">
+    <h1 class="page-title works__title">{t('works.title')}</h1>
+
+    {
+      page.data.length > 0 ? (
+        <WorkGrid works={page.data} lang={lang} eagerCount={3} />
+      ) : (
+        <p class="muted">{t('works.empty')}</p>
+      )
+    }
+
+    <Pagination
+      base="/works"
+      lang={lang}
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      prevUrl={page.url.prev}
+      nextUrl={page.url.next}
+    />
+  </div>
+</BaseLayout>
+
+<style>
+  .works__title {
+    margin-bottom: var(--space-lg);
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+import { site } from '../data/site';
+import { withBase } from '../i18n/ui';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__copy">
+      {
+        site.mark && (
+          <img
+            class="footer__mark"
+            src={withBase(site.mark)}
+            alt=""
+            width={site.markWidth}
+            height={site.markHeight}
+            loading="lazy"
+          />
+        )
+      }
+      <span>© {year} {site.name}</span>
+    </p>
+
+    <ul class="footer__social">
+      {
+        site.social.map((item) => (
+          <li>
+            <a class="footer__link" href={item.href} target="_blank" rel="noopener noreferrer">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-line);
+    padding-block: var(--space-md);
+  }
+
+  .footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .footer__copy {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .footer__mark {
+    width: auto;
+    height: 2.25rem;
+  }
+
+  .footer__copy,
+  .footer__link {
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .footer__social {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .footer__link {
+    transition: color 0.2s ease;
+  }
+
+  .footer__link:hover {
+    color: var(--color-ink);
+  }
+</style>

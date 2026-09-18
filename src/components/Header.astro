@@ -1,0 +1,126 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { site } from '../data/site';
+import { localizePath, stripLang, useTranslations, withBase, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const currentPath = stripLang(Astro.url.pathname);
+const isActive = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath === href || currentPath.startsWith(href + '/');
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="header__logo" href={localizePath('/', lang)} aria-label={site.name}>
+      {
+        site.mark && (
+          <img
+            class="header__mark"
+            src={withBase(site.mark)}
+            alt=""
+            width={site.markWidth}
+            height={site.markHeight}
+          />
+        )
+      }
+      <span>{site.logo}</span>
+    </a>
+
+    <div class="header__right">
+      <nav class="header__nav" aria-label={site.name}>
+        <ul class="header__list">
+          {
+            site.nav.map((item) => (
+              <li>
+                <a
+                  href={localizePath(item.href, lang)}
+                  class:list={['header__link', { 'is-active': isActive(item.href) }]}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  {t(item.key)}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <LanguageSwitcher lang={lang} />
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 4.5rem;
+    flex-wrap: wrap;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--step-0);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .header__mark {
+    width: auto;
+    height: 2rem;
+  }
+
+  .header__right {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .header__list {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .header__link {
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .header__link:hover,
+  .header__link.is-active {
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 560px) {
+    .header__inner {
+      justify-content: center;
+      padding-block: var(--space-sm);
+      min-height: 0;
+    }
+
+    .header__right {
+      gap: var(--space-sm);
+    }
+  }
+</style>

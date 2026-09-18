@@ -1,0 +1,117 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCvEntries, localizeCvEntry } from '../../lib/works';
+import { langParams, toLang, ui, defaultLang, useTranslations } from '../../i18n/ui';
+
+export const getStaticPaths = (() =>
+  langParams().map((params) => ({ params }))) satisfies GetStaticPaths;
+
+const lang = toLang(Astro.params.lang);
+const t = useTranslations(lang);
+
+const entries = await getCvEntries();
+
+/** Known category keys are translated; anything else is shown as written. */
+const categoryLabel = (category: string) => {
+  const key = `cv.${category}` as keyof (typeof ui)[typeof defaultLang];
+  return key in ui[defaultLang] ? (t(key) as string) : category;
+};
+
+const categories = [...new Set(entries.map((entry) => entry.data.category))];
+const groups = categories.map((category) => ({
+  label: categoryLabel(category),
+  items: entries
+    .filter((entry) => entry.data.category === category)
+    .map((entry) => localizeCvEntry(entry, lang)),
+}));
+---
+
+<BaseLayout lang={lang} title={t('cv.title')}>
+  <div class="container cv">
+    <h1 class="page-title cv__title">{t('cv.title')}</h1>
+
+    {groups.length === 0 && <p class="muted">{t('cv.empty')}</p>}
+
+    {
+      groups.map((group) => (
+        <section class="cv__section">
+          <h2 class="eyebrow cv__heading">{group.label}</h2>
+          <ol class="cv__timeline">
+            {group.items.map((item) => (
+              <li class="cv__item">
+                <div class="cv__year">{item.year}</div>
+                <div class="cv__detail">
+                  <h3 class="cv__name">{item.title}</h3>
+                  {(item.venue || item.location) && (
+                    <p class="cv__place muted">
+                      {[item.venue, item.location].filter(Boolean).join(', ')}
+                    </p>
+                  )}
+                  {item.description && <p class="cv__desc muted">{item.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  /* Keep the timeline on a comfortable measure while the page padding
+     stays aligned with the header and the rest of the site. */
+  .cv > * {
+    max-width: 60rem;
+  }
+
+  .cv__title {
+    margin-bottom: var(--space-lg);
+  }
+
+  .cv__section + .cv__section {
+    margin-top: var(--space-lg);
+  }
+
+  .cv__heading {
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: var(--space-sm);
+  }
+
+  .cv__item {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--space-sm);
+    padding-block: 0.9rem;
+  }
+
+  .cv__item + .cv__item {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .cv__year {
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    padding-top: 0.15rem;
+  }
+
+  .cv__name {
+    font-size: var(--step-0);
+    font-weight: 500;
+  }
+
+  .cv__place,
+  .cv__desc {
+    font-size: var(--step-0);
+  }
+
+  @media (max-width: 560px) {
+    .cv__item {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+</style>

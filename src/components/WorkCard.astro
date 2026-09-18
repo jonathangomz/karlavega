@@ -1,0 +1,70 @@
+---
+import { workImage, workCaption, localizeWork, type Work } from '../lib/works';
+import { localizePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  work: Work;
+  lang: Lang;
+  /** `eager` for the first images so the grid paints immediately. */
+  loading?: 'lazy' | 'eager';
+}
+
+const { work, lang, loading = 'lazy' } = Astro.props;
+const { title } = localizeWork(work, lang);
+const { imageWidth, imageHeight } = work.data;
+---
+
+<article class="card">
+  <a class="card__link" href={localizePath(`/works/${work.id}`, lang)}>
+    <div class="card__frame">
+      <img
+        class="card__image"
+        src={workImage(work, lang)}
+        alt={title}
+        width={imageWidth}
+        height={imageHeight}
+        loading={loading}
+        decoding="async"
+      />
+    </div>
+    <div class="card__caption">
+      <h3 class="card__title">{title}</h3>
+      <p class="card__meta">{workCaption(work, lang)}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card__link {
+    display: block;
+  }
+
+  /* Cards hug the artwork: no fixed box, no cropping, so portrait and
+     landscape works are both shown whole. */
+  .card__image {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease;
+  }
+
+  .card__link:hover .card__image {
+    opacity: 0.82;
+  }
+
+  .card__caption {
+    margin-top: var(--space-xs);
+    text-align: left;
+  }
+
+  .card__title {
+    font-size: var(--step-0);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .card__meta {
+    font-size: var(--step-0);
+    font-weight: 300;
+    color: var(--color-muted);
+  }
+</style>

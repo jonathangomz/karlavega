@@ -1,0 +1,155 @@
+/* ---------------------------------------------------------------
+   Design tokens
+   --------------------------------------------------------------- */
+:root {
+  --color-bg: #ffffff;
+  --color-ink: #111111;
+  --color-muted: #767676;
+  --color-line: #e6e6e6;
+  --color-placeholder: #f2f2f2;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    'Inter', 'Segoe UI', Arial, sans-serif;
+
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.125rem;
+  --step-2: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+
+  --page-max: 1400px;
+  --page-pad: clamp(1.25rem, 4vw, 3.5rem);
+
+  --tracking-wide: 0.08em;
+}
+
+/* ---------------------------------------------------------------
+   Reset
+   --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/* ---------------------------------------------------------------
+   Layout helpers
+   --------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
+}
+
+.main {
+  flex: 1 0 auto;
+  padding-block: var(--space-lg) var(--space-xl);
+}
+
+/* Narrow measure for reading-heavy pages (about, contact, work detail). */
+.prose {
+  max-width: 62ch;
+}
+
+.prose p + p {
+  margin-top: var(--space-sm);
+}
+
+/* ---------------------------------------------------------------
+   Typography helpers
+   --------------------------------------------------------------- */
+.page-title {
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.muted {
+  color: var(--color-muted);
+  font-weight: 300;
+}
+
+.link-underline {
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease;
+}
+
+.link-underline:hover {
+  opacity: 0.55;
+}
+
+/* Placeholder background behind images while they load. */
+.frame {
+  background: var(--color-placeholder);
+  overflow: hidden;
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 3px;
+}

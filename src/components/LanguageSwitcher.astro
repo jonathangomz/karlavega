@@ -1,0 +1,113 @@
+---
+import { languages, langCodes, localizePath, stripLang, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+/** The current page, expressed in each language. */
+const basePath = stripLang(Astro.url.pathname);
+const options = langCodes.map((code) => ({
+  code,
+  label: languages[code],
+  href: localizePath(basePath, code),
+}));
+---
+
+<details class="lang" aria-label={t('nav.language')}>
+  <summary class="lang__button">{languages[lang]}</summary>
+  <ul class="lang__menu">
+    {
+      options.map((option) => (
+        <li>
+          <a
+            class:list={['lang__option', { 'is-active': option.code === lang }]}
+            href={option.href}
+            hreflang={option.code}
+            lang={option.code}
+            aria-current={option.code === lang ? 'true' : undefined}
+          >
+            {option.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  // Close the menu on outside click or Escape.
+  const close = (except?: EventTarget | null) => {
+    document.querySelectorAll<HTMLDetailsElement>('details.lang[open]').forEach((el) => {
+      if (!except || !el.contains(except as Node)) el.open = false;
+    });
+  };
+
+  document.addEventListener('click', (event) => close(event.target));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+  });
+</script>
+
+<style>
+  .lang {
+    position: relative;
+  }
+
+  .lang__button {
+    list-style: none;
+    cursor: pointer;
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  /* Hide the native disclosure triangle. */
+  .lang__button::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang__button::after {
+    content: '';
+    display: inline-block;
+    margin-left: 0.4em;
+    border: 0.25em solid transparent;
+    border-top-color: currentColor;
+    transform: translateY(0.15em);
+  }
+
+  .lang:hover .lang__button,
+  .lang[open] .lang__button {
+    color: var(--color-ink);
+  }
+
+  .lang__menu {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    z-index: 20;
+    min-width: 4rem;
+    padding: 0.35rem 0;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+  }
+
+  .lang__option {
+    display: block;
+    padding: 0.35rem 0.9rem;
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .lang__option:hover,
+  .lang__option.is-active {
+    color: var(--color-ink);
+  }
+</style>

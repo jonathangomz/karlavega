@@ -1,0 +1,94 @@
+---
+import { localizePath, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  currentPage: number;
+  lastPage: number;
+  prevUrl?: string;
+  nextUrl?: string;
+  /** Unprefixed base path for numbered links, e.g. "/works". */
+  base: string;
+  lang: Lang;
+}
+
+const { currentPage, lastPage, prevUrl, nextUrl, base, lang } = Astro.props;
+const t = useTranslations(lang);
+const pageUrl = (n: number) => localizePath(n === 1 ? base : `${base}/${n}`, lang);
+const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
+---
+
+{
+  lastPage > 1 && (
+    <nav class="pagination" aria-label={t('pagination.label')}>
+      {prevUrl ? (
+        <a class="pagination__step" href={prevUrl} rel="prev">
+          {t('pagination.prev')}
+        </a>
+      ) : (
+        <span class="pagination__step is-disabled">{t('pagination.prev')}</span>
+      )}
+
+      <ol class="pagination__pages">
+        {pages.map((n) => (
+          <li>
+            {n === currentPage ? (
+              <span class="pagination__page is-current" aria-current="page">
+                {n}
+              </span>
+            ) : (
+              <a class="pagination__page" href={pageUrl(n)}>
+                {n}
+              </a>
+            )}
+          </li>
+        ))}
+      </ol>
+
+      {nextUrl ? (
+        <a class="pagination__step" href={nextUrl} rel="next">
+          {t('pagination.next')}
+        </a>
+      ) : (
+        <span class="pagination__step is-disabled">{t('pagination.next')}</span>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .pagination__pages {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .pagination__step,
+  .pagination__page {
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .pagination__step:hover,
+  .pagination__page:hover {
+    color: var(--color-ink);
+  }
+
+  .pagination__step.is-disabled {
+    opacity: 0.35;
+  }
+
+  .pagination__page.is-current {
+    color: var(--color-ink);
+    border-bottom: 1px solid currentColor;
+  }
+</style>
