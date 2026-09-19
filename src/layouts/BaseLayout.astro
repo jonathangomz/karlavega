@@ -8,13 +8,14 @@ import '../styles/global.css';
 interface Props {
   lang: Lang;
   title?: string;
+  subtitle?: string;
   description?: string;
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, subtitle, description } = Astro.props;
 const t = useTranslations(lang);
 
-const pageTitle = title ? `${title} — ${site.name}` : site.name;
+const pageTitle = title ? `${title} — ${site.name}` : subtitle ? `${site.name} — ${subtitle}` : site.name;
 const basePath = stripLang(Astro.url.pathname);
 ---
 

@@ -17,7 +17,7 @@ const recent = rest.slice(0, 3);
 const featuredText = featured ? localizeWork(featured, lang) : null;
 ---
 
-<BaseLayout lang={lang}>
+<BaseLayout lang={lang} subtitle="Visual Artist">
   <div class="container">
     {
       featured && featuredText && (
