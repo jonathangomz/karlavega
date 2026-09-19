@@ -18,7 +18,7 @@ const categoryLabel = (category: string) => {
   return key in ui[defaultLang] ? (t(key) as string) : category;
 };
 
-const categories = [...new Set(entries.map((entry) => entry.data.category))];
+const categories = [...new Set(entries.map((entry) => entry.data.category))].filter((c) => c !== 'experience');
 const groups = categories.map((category) => ({
   label: categoryLabel(category),
   items: entries
